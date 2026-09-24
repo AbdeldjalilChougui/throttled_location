@@ -9,3 +9,5 @@ export 'src/backlog.dart' show BacklogOverflow, BacklogPolicy;
 export 'src/geo.dart';
 export 'src/location_fix.dart';
 export 'src/reasons.dart';
+export 'src/policy.dart';
+export 'src/policy_engine.dart';
