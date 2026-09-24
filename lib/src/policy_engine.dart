@@ -138,8 +138,9 @@ class ReportingPolicyEngine {
 
     final sentAt = _lastSentAt;
     final sent = _lastSent;
-    if (sentAt == null || sent == null)
+    if (sentAt == null || sent == null) {
       return _send(fix, now, SendReason.first);
+    }
 
     final elapsed = now.difference(sentAt);
     if (elapsed < policy.minInterval) {

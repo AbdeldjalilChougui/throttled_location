@@ -19,8 +19,9 @@ List<(LocationFix, SendReason)> sends(
 Map<DropReason, int> drops(List<(LocationFix, PolicyDecision)> decisions) {
   final out = <DropReason, int>{};
   for (final (_, d) in decisions) {
-    if (d case DropDecision(:final reason))
+    if (d case DropDecision(:final reason)) {
       out[reason] = (out[reason] ?? 0) + 1;
+    }
   }
   return out;
 }
