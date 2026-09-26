@@ -174,26 +174,32 @@ call in `PollingLocationSource(read, period: ...)`. Reads never overlap.
 #### background_location_free
 
 `background_location_free` is a sibling package that provides a
-foreground-service location stream on Android. It is **still being built
-and has not been published**, so the snippet below is a sketch against its
-planned shape. The final API may differ.
+foreground-service location stream on Android. This package does not depend
+on it. Add both to your app and use this adapter:
 
 ```dart
-// Sketch only: names may change before background_location_free ships.
+import 'package:background_location_free/background_location_free.dart' as bg;
+import 'package:throttled_location/throttled_location.dart';
+
 final backgroundSource = LocationSource.fromStream(
-  () => BackgroundLocation.positions(interval: const Duration(seconds: 1))
-      .map((p) => LocationFix(
-            lat: p.latitude,
-            lon: p.longitude,
-            accuracy: p.accuracy,
-            speed: p.speed,
-            heading: p.bearing,
-            altitude: p.altitude,
-            timestamp: p.time,
-            isMocked: p.isMock,
-          )),
+  () => bg.BackgroundLocation.locations.map(
+    (f) => LocationFix(
+      lat: f.lat,
+      lon: f.lon,
+      accuracy: f.accuracy,
+      speed: f.speed,
+      heading: f.bearing,
+      altitude: f.altitude,
+      timestamp: f.time,
+      isMocked: f.isMocked,
+    ),
+  ),
 );
 ```
+
+The `bg` prefix is needed because both packages export a `LocationFix`.
+Start the service with `minDistanceMeters: 0` and let this package do the
+throttling.
 
 ## Limitations
 
